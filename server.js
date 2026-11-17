@@ -180,6 +180,10 @@ async function getRequestWithHistory(requestId, client = pool) {
 }
 
 app.disable('x-powered-by');
+// Trust Render's reverse proxy for HTTPS secure session cookies.
+if (IS_PRODUCTION) {
+  app.set('trust proxy', 1);
+}
 app.use(express.json({ limit: '20kb' }));
 app.use(session({
   name: 'schooldocs.sid',
