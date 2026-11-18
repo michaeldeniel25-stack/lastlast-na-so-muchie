@@ -327,8 +327,8 @@ app.patch('/api/requests/:id', requireAuth, requireRegistrar, async (req, res, n
     const changed = old.status !== status || old.registrar_note !== note;
     const now = new Date();
     await client.query(
-      `UPDATE requests SET status=$1,registrar_note=$2,updated_at=$3,
-       picked_up_at=CASE WHEN $1='Completed' THEN COALESCE(picked_up_at,$3) ELSE picked_up_at END WHERE id=$4`,
+      `UPDATE requests SET status=$1::varchar,registrar_note=$2,updated_at=$3,
+ picked_up_at=CASE WHEN $1::varchar='Completed' THEN COALESCE(picked_up_at,$3) ELSE picked_up_at END WHERE id=$4`,
       [status,note,now,req.params.id]
     );
     if (changed) {
